@@ -18,7 +18,7 @@ class KafkaConsumeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $conf = new Conf();
-        $conf->set('bootstrap.servers', 'kafka1:9092');
+        $conf->set('bootstrap.servers', 'kafka:9092');
         $conf->set('group.id', 'my-consumer-group');
         $conf->set('auto.offset.reset', 'earliest');
         $conf->set('client.id', 'kafka-consumer-4');

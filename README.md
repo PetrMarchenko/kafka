@@ -24,7 +24,7 @@ git switch <commit> //Kafka + Zookeeper setup
 
 3️⃣ **Start Docker services**
 ```bash
-docker compose -f docker/docker-compose.yml up -d
+docker compose -f docker/docker-compose.yml up -d --build 
 ```
 
 4️⃣ **Enter the PHP container**

@@ -19,7 +19,7 @@ class KafkaProduceCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $conf = new Conf();
-        $conf->set('bootstrap.servers', 'kafka1:9092');
+        $conf->set('bootstrap.servers', 'kafka:9092');
 
         $producer = new Producer($conf);
 
