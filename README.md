@@ -77,3 +77,10 @@ php php bin/console app:test-outbox
 ```bash
 php bin/console app:kafka:consume
 ```
+
+
+## ⚡ Outbox Pattern + WAL Streaming + Kafka (Go)
+Replaced Debezium with a custom Go-based solution — this provides better control and a deeper understanding of what’s happening under the hood.
+
+📦 Setup Guide
+See full setup instructions here: 📄 [docs/outbox-pattern-go.md](docs/outbox-pattern-go.md)

@@ -54,7 +54,8 @@ services:
             - kafka_network
 
     postgres:
-        image: debezium/postgres:15
+        build:
+            context: ./postgres
         container_name: postgres
         restart: unless-stopped
         environment:
@@ -65,31 +66,49 @@ services:
             - "5432:5432"
         volumes:
             - pg_data:/var/lib/postgresql/data
+            - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+            - ./postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf
+        command: postgres -c 'config_file=/etc/postgresql/postgresql.conf'
         networks:
             - kafka_network
 
-
-    kafka-connect:
-        image: debezium/connect:2.6
-        container_name: kafka-connect
-        restart: unless-stopped
-        ports:
-            - "8083:8083"
+    cdc-listener:
+        build:
+            context: ./cdc-listener
+        container_name: cdc-listener
         environment:
-            BOOTSTRAP_SERVERS: kafka:9092
-            GROUP_ID: 1
-            CONFIG_STORAGE_TOPIC: debezium_connect_configs
-            OFFSET_STORAGE_TOPIC: debezium_connect_offsets
-            STATUS_STORAGE_TOPIC: debezium_connect_statuses
-            KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-            VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-            KEY_CONVERTER_SCHEMAS_ENABLE: "false"
-            VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
-            PLUGIN_PATH: /kafka/connect
+            - KAFKA_BROKER=kafka:9092
         depends_on:
-            - kafka
+            - postgres
         networks:
             - kafka_network
+        volumes:
+            - ./cdc-listener:/app
+        restart: unless-stopped
+
+
+
+#    kafka-connect:
+#        image: debezium/connect:2.6
+#        container_name: kafka-connect
+#        restart: unless-stopped
+#        ports:
+#            - "8083:8083"
+#        environment:
+#            BOOTSTRAP_SERVERS: kafka:9092
+#            GROUP_ID: 1
+#            CONFIG_STORAGE_TOPIC: debezium_connect_configs
+#            OFFSET_STORAGE_TOPIC: debezium_connect_offsets
+#            STATUS_STORAGE_TOPIC: debezium_connect_statuses
+#            KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#            VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#            KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+#            VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+#            PLUGIN_PATH: /kafka/connect
+#        depends_on:
+#            - kafka
+#        networks:
+#            - kafka_network
 
     kafka-ui:
         image: provectuslabs/kafka-ui:latest
