@@ -49,7 +49,7 @@ composer install
 
 **Send a test message to Kafka**
 ```bash
-php bin/console app:kafka:produce
+php bin/console app:multiple-test-outbox --total=1000000 --batch=5 --delay=0.001
 ```
 
 **Consume messages from Kafka**
