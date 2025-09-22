@@ -49,7 +49,7 @@ composer install
 
 **Send a test message to Kafka**
 ```bash
-php bin/console app:multiple-test-outbox --total=1000000 --batch=5 --delay=0.001
+php php bin/console app:test-outbox
 ```
 
 **Consume messages from Kafka**
@@ -70,7 +70,7 @@ See full setup instructions here: 📄 [docs/outbox-pattern.md](docs/outbox-patt
 
 **✅ Insert an event into Postgres**
 ```bash
-php php bin/console app:test-outbox
+php bin/console app:multiple-test-outbox --total=1000000 --batch=5 --delay=0.001
 ```
 
 **📡 Consume messages from Kafka**

@@ -66,7 +66,7 @@ curl -X POST http://kafka-connect:8083/connectors \
 
 **✅ Insert an event into Postgres**
 ```bash
-php php bin/console app:test-outbox
+php bin/console app:multiple-test-outbox --total=1000000 --batch=5 --delay=0.001
 ```
 
 **📡 Consume messages from Kafka**
